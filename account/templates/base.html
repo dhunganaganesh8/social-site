@@ -1,0 +1,118 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="{% static "css/base.css" %}" type="text/css" rel="stylesheet">
+
+  <title>{% block title %}{% endblock %}</title>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="{% url "dashboard" %}">Bookmarks</a>
+
+    {% if request.user.is_authenticated %}
+    <div class="collapse navbar-collapse mr-2" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "dashboard" %}">My Dashboard <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'images:list' %}">Images</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'user_list' %}">People</a>
+        </li>
+      </ul>
+      <div class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-4 my-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="toggleit()">Search</button>
+      </div>
+    </div>
+    {% endif %}
+
+      <li class="list-unstyled" >
+        <div class="navbar-brand sm" id="authenticate-user">
+          {% if request.user.is_authenticated %}
+            Hello {{ request.user.first_name }},
+            <a class="" href="{% url "logout" %}">Logout</a>
+          {% else %}
+            <a class="" href="{% url "login" %}">Log-in</a>
+          {% endif %}
+          /<a href="https://127.0.0.1:8000/admin" target="_blank">admin</a>
+        </div>
+      </li>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+      {{ message|safe }}
+      <a href="#" class="close">x</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+
+
+  <div  id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    function toggleit() {
+      let searchBar = $("#searchInput");
+      if (searchBar.val() == "") {
+        searchBar.toggle();
+      }
+    }
+  </script>
+  <script type="text/javascript">
+    $("#authenticate-user").css("font-size", "13.5px");
+    toggleit();
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var csrftoken = Cookies.get('csrftoken');
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+    $(document).ready(function() {
+      {% block domready %}
+      {% endblock %}
+    });
+  </script>
+</body>
+</html>

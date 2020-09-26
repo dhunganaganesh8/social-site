@@ -83,7 +83,7 @@ def image_like(request):
 def image_list(request):
     images = Image.objects.order_by('-total_likes')
     # images = images.annotate(total_likes=Count('users_like')).order_by('-total_likes')
-    paginator = Paginator(images, 8)
+    paginator = Paginator(images, 9)
     page = request.GET.get('page')
     try:
         images = paginator.page(page)
@@ -97,13 +97,17 @@ def image_list(request):
             return HttpResponse('')
         # If page is out of range deliver last page of results
         images = paginator.page(paginator.num_pages)
+
+    cols = {'col1': images[:3],
+            'col2': images[3:6],
+            'col3': images[6:]}
     if request.is_ajax():
         return render(request,
                       'images/image/list_ajax.html',
-                      {'section': 'images', 'images': images})
+                      {'section': 'images', 'images': images, 'cols': cols})
     return render(request,
                   'images/image/list.html',
-                  {'section': 'images', 'images': images})
+                  {'section': 'images', 'images': images, 'cols': cols})
 
 @login_required
 def image_ranking(request):

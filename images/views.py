@@ -98,9 +98,12 @@ def image_list(request):
         # If page is out of range deliver last page of results
         images = paginator.page(paginator.num_pages)
 
-    cols = {'col1': images[:3],
-            'col2': images[3:6],
-            'col3': images[6:]}
+    len_images = len(images)
+    import math
+    div = math.floor(len_images/3)
+    cols = {'col1': images[:div],
+            'col2': images[div:2*div],
+            'col3': images[2*div:]}
     if request.is_ajax():
         return render(request,
                       'images/image/list_ajax.html',

@@ -1,7 +1,27 @@
 {% load thumbnail %}
-  <div class="row">
-    {% for images in cols.values %}
-      <div class="column">
+  {% if not request.is_ajax %}
+  {{ request.is_ajax }}
+    <div class="row">
+      {% for images in cols.values %}
+        <div class="column column{{ forloop.counter }}">
+          {% for image in images %}
+            {% thumbnail image.image 300x0 as im %}
+            <a href="{{ image.get_absolute_url }}">
+              <img src="{{ im.url }}" alt="">
+            </a>
+            <div class="info">
+              <a href="{{ image.get_absolute_url }}" class="title">
+                {{ image.title|truncatewords:5 }}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+  {% for images in cols.values %}
+    <script type="text/javascript">
+      $(".row .column{{ forloop.counter }}").append(`
         {% for image in images %}
           {% thumbnail image.image 300x0 as im %}
           <a href="{{ image.get_absolute_url }}">
@@ -13,6 +33,7 @@
             </a>
           </div>
         {% endfor %}
-      </div>
+      `)
+    </script>
     {% endfor %}
-  </div>
+  {% endif %}

@@ -15,9 +15,20 @@
       href: static_url + 'css/bookmarklet.css?r=' + Math.floor(Math.
   random()*99999999999999999999)
   });
+
+    var picker_css = jQuery('<link>');
+    picker_css.attr({
+      rel: 'stylesheet',
+      type: 'text/css',
+      href: static_url + 'css/image-picker.css?r=' + Math.floor(Math.
+  random()*99999999999999999999)
+  });
+
+
+  jQuery('head').append(picker_css);
   jQuery('head').append(css);
   jQuery('head').append('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">');
-  console.log('running');
+
 
   // load HTML
   box_html =
@@ -25,16 +36,22 @@
     <a href="javascript:void();" id="close">
       &times;
     </a>
-      <h1>Select an image to bookmark:
+      <h1>Select an image to <button id="bookmark-images" type="button" class="btn btn-primary btn-sm">bookmark</button>:
       <span>
         <button id="pause" type="button" class="btn btn-primary btn-sm">
           Pause
         </button>
       </span>
       </h1>
-    <div class="images">Wait for 5 seconds.</div>
+    <div class="container">
+        <select class="image-picker show-html" data-limit="2" multiple="multiple">
+        </select>
+    </div>
   </div>`;
+
   jQuery('body').append(box_html);
+
+
 
   $(document.body).css('overflow', 'auto');
   // close event
@@ -56,7 +73,6 @@
     }
     jQuery(this).html("Resume");
     jQuery("#pause").attr("id", "resume")
-    // jQuery('#bookmarklet').remove();
   });
 
   // resume event
@@ -65,7 +81,6 @@
     jQuery(this).html("Pause");
     jQuery("#resume").attr("id", "pause");
     myTimer_restart = setInterval(timer, 5000);
-    // jQuery('#bookmarklet').remove();
   });
 
 
@@ -73,7 +88,6 @@
   // find images and display them
   timer();
   myTimer = setInterval(timer, 5000);
-  $('#bookmarklet .images').html("");
   function timer() {
     jQuery.each(jQuery('img[src*="jpg"], img[src*="jpeg"], img[src*="photo"]'), function(index, image) {
       if (jQuery(image).width() >= min_width && jQuery(image).height() <= max_height && jQuery(image).height()
@@ -98,15 +112,14 @@
             srclist.push(bookmarklet_images[i].src);
           }
           if (srclist.includes(image_url) == false) {
-            jQuery('#bookmarklet .images').append('<a class="img_link" href="#"><img src="'+
-            image_url +'" /></a>');
+            jQuery('#bookmarklet .image-picker').append('<option data-img-src="'+
+            image_url +'" /></option>');
           }
         }else{
-          jQuery('#bookmarklet .images').append('<a class="img_link" href="#"><img src="'+
-          image_url +'" /></a>');
+          jQuery('#bookmarklet .image-picker').append('<option value="<script>$(".image_picker_selector").children().length;</script>" data-img-src="'+
+          image_url +'" /></option>');
         }
       }
-      // timer();
 
       function smoothScroll(duration) {
         var startPosition = window.pageYOffset || window.scrollY;
@@ -130,18 +143,26 @@
         a = requestAnimationFrame(loop);
       }
 
-      smoothScroll(5000);
+      // smoothScroll(5000);
+
+      //append image-picker js to body
+      var picker_js = document.createElement('script');
+      picker_js.onload = function(){
+        $(".image-picker").imagepicker();
+      };
+      picker_js.src = 'https://mysite.com:8000/static/js/image-picker.min.js';
+      document.body.appendChild(picker_js);
 
       //when an image is selected open URL with it
-      jQuery('#bookmarklet .images a').click(function(e){
+      jQuery('#bookmarklet #bookmark-images').click(function(e){
         clearInterval(myTimer);
         if (typeof myTimer_restart != 'undefined') {
           clearInterval(myTimer_restart);
         }
-        console.log("hello");
         selected_image = jQuery(this).children('img').attr('src');
         // hide bookmarklet
         jQuery('#bookmarklet').hide();
+
         //open new window to submit the image
         window.open(site_url +'images/create/?url='
                     + encodeURIComponent(selected_image)

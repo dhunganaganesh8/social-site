@@ -7,13 +7,20 @@
   {% load thumbnail %}
   <div>
     {% if image.user == request.user %}
-    <p>This image is your contribution to the collage!</p>
+      <p>This image is your contribution to the collage!</p>
       <span class="btn-danger btn-sm close" id="image-delete">
         <a href="#">&times</a>
       </span>
+    {% else %}
+      <p>Contributer:
+      <span class="image-user">
+        <a href="{% url 'user_detail' image.user.username %}">
+          <img src="{{ image.user.profile.photo.url }}" alt="">
+        </a>
+      </span></p>
     {% endif %}
     <a href="{{ image.image.url }}">
-      <img src="{% thumbnail image.image 300x0 %}" class="image-detail">
+      <img src="{% thumbnail image.image 500x0 %}" class="image-detail">
     </a>
   </div>
   {% with total_likes=image.users_like.count users_like=image.users_like.all %}
@@ -36,6 +43,7 @@
       </div>
       {{ image.description|linebreaks }}
     </div>
+    <h3>Likes:</h3>
     <div class="image-likes">
       {% for user in users_like %}
         <div>

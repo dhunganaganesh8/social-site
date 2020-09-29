@@ -33,7 +33,7 @@
           <a class="nav-link" href="{% url 'user_list' %}">People</a>
         </li>
       </ul>
-      <div class="form-inline my-2 my-lg-0">
+      <div class="form-inline search my-2 my-lg-0">
         <input class="form-control mr-sm-4 my-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
         <button class="btn btn-outline-success my-2 my-sm-0" onclick="toggleit()">Search</button>
       </div>
@@ -43,10 +43,14 @@
       <li class="list-unstyled" >
         <div class="navbar-brand sm" id="authenticate-user">
           {% if request.user.is_authenticated %}
-            Hello {{ request.user.first_name }},
-            <a class="" href="{% url "logout" %}">Logout</a>
+            <b>Hello</b> <a href="{% url 'user_detail' request.user %}">
+              <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-user"></span>{{ request.user.first_name }}
+              </button>
+            </a>,
+            <a class="btn btn-danger btn-sm" href="{% url "logout" %}">Logout</a>
           {% else %}
-            <a class="" href="{% url "login" %}">Log-in</a>
+            <a class="btn btn-success btn-sm" href="{% url "login" %}">Log-in</a>
           {% endif %}
           /<a href="https://127.0.0.1:8000/admin" target="_blank">admin</a>
         </div>

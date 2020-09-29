@@ -4,3 +4,6 @@ cert.key
 /media
 *.pyc
 .gitignore
+*.jpg
+*.png
+*.jpeg

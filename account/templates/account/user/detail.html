@@ -4,27 +4,54 @@
 {% block title %}{{ user.get_full_name }}{% endblock %}
 
 {% block content %}
-  <h1>{{ user.get_full_name }}</h1>
+  <h1>
+    {% if user == request.user %}
+      Your Profile({{user.username}})
+    {% else %}
+      {{ user.get_full_name }}
+    {% endif %}
+  </h1>
   <div class="profile-info">
-    <img src="{% thumbnail user.profile.photo 180x180 %}"
-alt="" class="user-detail">
+    <img src="{{ user.profile.photo.url }}" alt="" class="user-detail">
   </div>
   {% with user.followers.count as total_followers %}
     <span class="count">
       <span class="total">{{ total_followers }}</span>
       follower{{ total_followers|pluralize }}
     </span>
-    <a href="#" data-id="{{ user.id }}"
-data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
-class="follow button">
-      {% if request.user not in user.followers.all %}
-        Follow
-      {% else %}
-        Unfollow
-      {% endif %}
-    </a>
+    {% if user == request.user %}
+    <span><a class="btn btn-secondary" href="{% url "edit" %}">edit your profile</a>
+      <a class="btn btn-warning" href="{% url "password_change" %}">change your password</a>.
+    </span>
+    {% else %}
+      <a href="#" data-id="{{ user.id }}"
+  data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+  class="follow button">
+        {% if request.user not in user.followers.all %}
+          Follow
+        {% else %}
+          Unfollow
+        {% endif %}
+      </a>
+    {% endif %}
+  {% endwith %}
+  {% with user.images_created as images %}
     <div class="image-container" id="image-list">
-      {% include "images/image/list_ajax.html" with images=user.images_created.all %}
+      <h1>Images Bookmarked ({{ images.count }}):</h1>
+      {% if images.count %}
+        {% include "images/image/list_ajax.html" with images=images.all %}
+      {% elif not images.count and request.user == user %}
+        <p>
+          You haven't bookmarked any images yet.<br>
+          Get started here:
+          <a class="btn btn-primary"
+              href="https://www.pinterest.com" target="_blank">Pinterest</a> or
+          <a class="btn btn-primary"
+              href="https://www.pexels.com/search/hd%20wallpaper/" target="_blank">Pixabay</a>
+        </p>
+      {% else %}
+        <p>{{ user.get_full_name }} has not bookmarked any image yet.</p>
+      {% endif %}
     </div>
   {% endwith %}
 {% endblock %}

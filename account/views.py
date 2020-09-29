@@ -9,8 +9,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.views.decorators.http import require_POST
 from common.decorators import ajax_required
+from common.column import make_column
 from actions.utils import create_action
 from actions.models import Action
+
 
 
 # def user_login(request):
@@ -36,7 +38,7 @@ from actions.models import Action
 
 @login_required
 def dashboard(request):
-    # Displat all actions by default
+    # Display all actions by default
     actions = Action.objects.exclude(user=request.user)
     following_ids = request.user.following.values_list('id',
                                                        flat=True)
@@ -114,10 +116,13 @@ def user_detail(request, username):
     user = get_object_or_404(User,
                              username=username,
                              is_active=True)
+    images = user.images_created.all()
+    cols = make_column(images)
     return render(request,
                   'account/user/detail.html',
                   {'section': 'people',
-                   'user': user})
+                   'user': user,
+                   'cols': cols})
 
 @ajax_required
 @require_POST

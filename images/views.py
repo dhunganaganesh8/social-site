@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import ImageCreateForm
 from .models import Image
+from common.column import make_column
 from common.decorators import ajax_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
@@ -98,12 +99,7 @@ def image_list(request):
         # If page is out of range deliver last page of results
         images = paginator.page(paginator.num_pages)
 
-    len_images = len(images)
-    import math
-    div = math.floor(len_images/3)
-    cols = {'col1': images[:div],
-            'col2': images[div:2*div],
-            'col3': images[2*div:]}
+    cols = make_column(images)
     if request.is_ajax():
         return render(request,
                       'images/image/list_ajax.html',

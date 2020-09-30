@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "kzf*m4ezu_d8%^zj!^+lp=)rz_rcan1*z7(x1ern=dstlnddmt"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', 'picsit.herokuapp.com']
 
@@ -171,3 +171,5 @@ CACHES = {
          "LOCATION": os.environ.get('REDIS_URL'),
     }
 }
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'

@@ -34,12 +34,12 @@
     color:#000;
 }
 
-/* #bookmarklet .images {
+#bookmarklet .images {
     margin-bottom:20px;
     overflow:auto;
-} */
+}
 
-.img_link {
+.#bookmarklet .images img {
     border:1px solid #ccc;
     padding:2px;
     margin:2px;
@@ -48,8 +48,8 @@
     float:left;
 }
 
-/* #bookmarklet .images img.selected,
+#bookmarklet .images img.selected,
 #bookmarklet .images img:hover {
     border:1px solid #12c064;
     opacity:1;
-} */
+}

@@ -16,16 +16,16 @@
   random()*99999999999999999999)
   });
 
-    var picker_css = jQuery('<link>');
-    picker_css.attr({
-      rel: 'stylesheet',
-      type: 'text/css',
-      href: static_url + 'css/image-picker.css?r=' + Math.floor(Math.
-  random()*99999999999999999999)
-  });
+  //   var picker_css = jQuery('<link>');
+  //   picker_css.attr({
+  //     rel: 'stylesheet',
+  //     type: 'text/css',
+  //     href: static_url + 'css/image-picker.css?r=' + Math.floor(Math.
+  // random()*99999999999999999999)
+  // });
 
 
-  jQuery('head').append(picker_css);
+  // jQuery('head').append(picker_css);
   jQuery('head').append(css);
   jQuery('head').append('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">');
 
@@ -36,17 +36,14 @@
     <a href="javascript:void();" id="close">
       &times;
     </a>
-      <h1>Select an image to <button id="bookmark-images" type="button" class="btn btn-primary btn-sm">bookmark</button>:
+      <h1>Select an image to bookmark:
       <span>
         <button id="pause" type="button" class="btn btn-primary btn-sm">
           Pause
         </button>
       </span>
       </h1>
-    <div class="container">
-        <select class="image-picker show-html" data-limit="2" multiple="multiple">
-        </select>
-    </div>
+    <div class="images"></div>
   </div>`;
 
   jQuery('body').append(box_html);
@@ -112,12 +109,12 @@
             srclist.push(bookmarklet_images[i].src);
           }
           if (srclist.includes(image_url) == false) {
-            jQuery('#bookmarklet .image-picker').append('<option data-img-src="'+
-            image_url +'" /></option>');
+            jQuery('#bookmarklet .images').append('<a class="img_link" href="#"><img src="'+
+            image_url +'" /></a>');
           }
         }else{
-          jQuery('#bookmarklet .image-picker').append('<option value="<script>$(".image_picker_selector").children().length;</script>" data-img-src="'+
-          image_url +'" /></option>');
+          jQuery('#bookmarklet .images').append('<a class="img_link" href="#"><img src="'+
+            image_url +'" /></a>');
         }
       }
 
@@ -143,18 +140,18 @@
         a = requestAnimationFrame(loop);
       }
 
-      // smoothScroll(5000);
+      smoothScroll(5000);
 
       //append image-picker js to body
-      var picker_js = document.createElement('script');
-      picker_js.onload = function(){
-        $(".image-picker").imagepicker();
-      };
-      picker_js.src = static_url + 'js/image-picker.min.js';
-      document.body.appendChild(picker_js);
+      // var picker_js = document.createElement('script');
+      // picker_js.onload = function(){
+      //   $(".image-picker").imagepicker();
+      // };
+      // picker_js.src = static_url + 'js/image-picker.min.js';
+      // document.body.appendChild(picker_js);
 
       //when an image is selected open URL with it
-      jQuery('#bookmarklet #bookmark-images').click(function(e){
+      jQuery('#bookmarklet .images a').click(function(e){
         clearInterval(myTimer);
         if (typeof myTimer_restart != 'undefined') {
           clearInterval(myTimer_restart);

@@ -12,13 +12,12 @@ from django.core.paginator import Paginator, EmptyPage, \
 from actions.utils import create_action, delete_action
 # from django.db.models import Count
 
+import os
 import redis
 from django.conf import settings
 
 # connect to redis
-r = redis.Redis(host=settings.REDIS_HOST,
-                port=settings.REDIS_PORT,
-                db=settings.REDIS_DB)
+r = redis.from_url(os.getenv('REDIS_URL'))
 
 @login_required
 def image_create(request):

@@ -1,6 +1,6 @@
 (function(){
   var jquery_version = '3.4.1';
-  var site_url = 'https://mysite.com:8000/';
+  var site_url = 'https://picsit.herokuapp.com/';
   var static_url = site_url + 'static/';
   var min_width = 100;
   var min_height = 100;
@@ -150,7 +150,7 @@
       picker_js.onload = function(){
         $(".image-picker").imagepicker();
       };
-      picker_js.src = 'https://mysite.com:8000/static/js/image-picker.min.js';
+      picker_js.src = static_url + 'js/image-picker.min.js';
       document.body.appendChild(picker_js);
 
       //when an image is selected open URL with it

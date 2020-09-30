@@ -39,7 +39,7 @@
     overflow:auto;
 }
 
-.#bookmarklet .images img {
+#bookmarklet .images img {
     border:1px solid #ccc;
     padding:2px;
     margin:2px;

@@ -26,7 +26,7 @@ SECRET_KEY = "kzf*m4ezu_d8%^zj!^+lp=)rz_rcan1*z7(x1ern=dstlnddmt"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', 'picsit.herokuapp.com']
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', 'picsit.herokuapp.com', 'imageit.media', 'www.imageit.media']
 
 
 # Application definition

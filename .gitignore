@@ -3,3 +3,4 @@ cert.key
 .gitignore
 .env
 *.pyc
+db.sqlite3

@@ -12,21 +12,29 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from django.urls import reverse_lazy
+import dj_database_url
+import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# New settings for dotenv
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "kzf*m4ezu_d8%^zj!^+lp=)rz_rcan1*z7(x1ern=dstlnddmt"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', 'picsit.herokuapp.com', 'imageit.media', 'www.imageit.media']
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', 'picsit.herokuapp.com', 'imageit.media', '*.imageit.media']
 
 
 # Application definition
@@ -84,12 +92,8 @@ WSGI_APPLICATION = 'bookmarks.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
@@ -129,11 +133,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 #
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
-
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
@@ -164,12 +169,10 @@ ABSOLUTE_URL_OVERRIDES = {
                                         args=[u.username])
 }
 
-
+REDIS_URL = 'redis://h:p9795079ab968c67511ac1ef7d2482c6abe301501691313121c8019e812d1e29f@ec2-34-199-92-188.compute-1.amazonaws.com:25839'
 CACHES = {
     "default": {
          "BACKEND": "redis_cache.RedisCache",
          "LOCATION": os.environ.get('REDIS_URL'),
     }
 }
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'

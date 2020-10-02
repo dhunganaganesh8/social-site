@@ -170,7 +170,6 @@ ABSOLUTE_URL_OVERRIDES = {
                                         args=[u.username])
 }
 
-REDIS_URL = 'redis://h:p9795079ab968c67511ac1ef7d2482c6abe301501691313121c8019e812d1e29f@ec2-34-199-92-188.compute-1.amazonaws.com:25839'
 CACHES = {
     "default": {
          "BACKEND": "redis_cache.RedisCache",

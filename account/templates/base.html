@@ -65,7 +65,7 @@
     {% for message in messages %}
     <li class="{{ message.tags }}">
       {{ message|safe }}
-      <a href="#" class="close">x</a>
+      <a href="#" class="close" onclick="close_message()">x</a>
     </li>
     {% endfor %}
   </ul>
@@ -92,6 +92,10 @@
         searchBar.toggle();
       }
     }
+    function close_message() {
+      $(".messages").remove()
+    }
+
   </script>
   <script type="text/javascript">
     $("#authenticate-user").css("font-size", "13.5px");

@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, \
@@ -11,6 +11,7 @@ from django.views.decorators.http import require_POST
 from common.decorators import ajax_required
 from common.column import make_column
 from actions.utils import create_action
+from django.urls import reverse
 from actions.models import Action
 
 
@@ -64,14 +65,11 @@ def register(request):
             new_user.set_password(
                 user_form.cleaned_data['password'])
             new_user.save()
-
-            # Create the user Profile
-            Profile.objects.create(user=new_user)
-            create_action(new_user, 'has created an account')
-
-            return render(request,
-                          'account/register_done.html',
-                          {'new_user': new_user})
+            messages.info(request, "Thanks for registering. You are now logged in.")
+            new_user = authenticate(username=user_form.cleaned_data['username'],
+                                    password=user_form.cleaned_data['password'],)
+            login(request, new_user)
+            return HttpResponseRedirect(reverse('dashboard'))
     else:
         user_form = UserRegistrationForm()
     return render(request,

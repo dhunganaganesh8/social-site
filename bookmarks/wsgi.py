@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
-from whitenoise.django import DjangoWhiteNoise
 
 from dotenv import load_dotenv
 project_folder = os.path.expanduser('~/bookmarks')  # adjust as appropriate
@@ -19,4 +18,3 @@ load_dotenv(os.path.join(project_folder, '.env'))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bookmarks.settings')
 
 application = get_wsgi_application()
-application = DjangoWhiteNoise(application)

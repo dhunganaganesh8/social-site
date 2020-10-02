@@ -27,5 +27,11 @@ urlpatterns = [
     path('images/', include('images.urls', namespace='images')),
 ]
 
+<<<<<<< HEAD
 urlpatterns += static(settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT)
+=======
+
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+>>>>>>> 15fe5891c7095d040f42b21f814007ee534f75f5

@@ -40,6 +40,7 @@ ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', 'picsit.herokuapp.com',
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     # 'bookmarks.apps.SuitConfig',
     'account.apps.AccountConfig',
     'django.contrib.admin',
@@ -138,7 +139,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'

@@ -24,7 +24,7 @@
         {% for image in images %}
           {% thumbnail image.image 300x0 as im %}
           <a href="{{ image.get_absolute_url }}">
-            <img src="{{ im.url }}" alt="">
+            <img src="{{ image.image.url }}" alt="">
           </a>
           <div class="info">
             <a href="{{ image.get_absolute_url }}" class="title">

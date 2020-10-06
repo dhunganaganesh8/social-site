@@ -4,7 +4,7 @@
       {% for images in cols.values %}
         <div class="column column{{ forloop.counter }}">
           {% for image in images %}
-            <!-- {% thumbnail image.image 300x0 as im %} -->
+            {% thumbnail image.image 300x0 as im %}
             <a href="{{ image.get_absolute_url }}">
               <img src="{{ image.get_absolute_url }}" alt="" width="300" height="0">
             </a>
